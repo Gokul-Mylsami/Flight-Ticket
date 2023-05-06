@@ -20,10 +20,6 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     validate: [validator.isEmail, "Please enter a valid email"],
   },
-  age: {
-    type: Number,
-    required: [true, "Please enter your age"],
-  },
   phone: {
     type: String,
     required: [true, "Please enter your phone number"],
@@ -31,10 +27,6 @@ const userSchema = new mongoose.Schema({
   country: {
     type: String,
     required: [true, "Please enter your country"],
-  },
-  aadharNo: {
-    type: String,
-    required: [true, "Please enter your aadhar number"],
   },
   passport: {
     type: Boolean,
