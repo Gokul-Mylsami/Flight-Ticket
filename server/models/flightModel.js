@@ -9,6 +9,10 @@ const flightSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter the flight number"],
   },
+  seatsBooked: {
+    type: Object,
+    default: {},
+  },
   economyPrice: {
     type: Number,
     required: [true, "Please enter the economy price"],
@@ -56,6 +60,11 @@ const flightSchema = new mongoose.Schema({
   international: {
     type: Boolean,
     required: [true, "Please enter the international"],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
   },
 });
 

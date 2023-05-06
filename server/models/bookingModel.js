@@ -11,14 +11,30 @@ const bookingSchema = new mongoose.Schema({
     ref: "Flight",
     required: true,
   },
-  seatNumber: {
-    type: Number,
+  seatNumbers: {
+    type: Array,
     required: true,
   },
   price: {
     type: Number,
     required: true,
   },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+    select: false,
+  },
+});
+
+bookingSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "user",
+    select: "name email phone",
+  }).populate({
+    path: "flight",
+    select: "name",
+  });
+  next();
 });
 
 const Booking = mongoose.model("Booking", bookingSchema);
