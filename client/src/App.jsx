@@ -1,19 +1,7 @@
-import "./App.css";
+import React from "react";
 
-function App() {
-  const count = 0;
-
-  const increament = (e) => {
-    e.preventDefault();
-    count = count + 1;
-  };
-
-  return (
-    <>
-      <p>Count : {count}</p>
-      <button onClick={increament}>Increment</button>
-    </>
-  );
-}
+const App = () => {
+  return <div>App</div>;
+};
 
 export default App;
