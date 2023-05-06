@@ -3,7 +3,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100vh;
+  height: 110vh;
 }
 .container {
   margin-top: 4rem;
@@ -95,4 +95,16 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+}
+
+.search-button {
+  width: 10rem;
+  height: 2.5rem;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }

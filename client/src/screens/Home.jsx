@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
 
 import Navbar from "../components/Navbar";
 
 import "../css/screens/Home.css";
 const Home = () => {
   const [depatureDate, setDepature] = useState(new Date());
-  const [returnDate, setReturnDate] = useState(new Date());
   const [classValue, setClassValue] = useState("economy");
 
   let classValues = [
@@ -68,11 +68,11 @@ const Home = () => {
             <div className="search-container">
               <div>
                 <p className="search-text">Depature</p>
-                {/* <DatePicker
+                <DatePicker
                   className="home-input date"
                   selected={depatureDate}
                   onChange={(date) => setDepature(date)}
-                /> */}
+                />
               </div>
             </div>
             <div className="search-container">
@@ -100,6 +100,9 @@ const Home = () => {
                   />
                 </div>
               </div>
+            </div>
+            <div className="search-container">
+              <button className="search-button">Search Flight</button>
             </div>
           </div>
         </div>

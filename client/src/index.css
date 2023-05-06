@@ -12,9 +12,9 @@ html {
 .button {
   cursor: pointer;
 }
-/* body::-webkit-scrollbar {
+body::-webkit-scrollbar {
   display: none;
-} */
+}
 
 :root {
   --color-primary: #339af0;
