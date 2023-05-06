@@ -60,16 +60,11 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   let bookedPremiumClassSeats = 0;
   let bookedFirstClassSeats = 0;
   for (let seatNumber of seatNumbers) {
-    let seatClass = "";
-
     if (seatNumber[0] === "E") {
-      seatClass = "economy";
       bookedEconomySeats++;
     } else if (seatNumber[0] === "P") {
-      seatClass = "premiumClass";
       bookedPremiumClassSeats++;
     } else if (seatNumber[0] === "F") {
-      seatClass = "firstClass";
       bookedFirstClassSeats++;
     } else {
       return next(new AppError("Invalid seat number", 404));
@@ -119,5 +114,61 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     data: newBooking,
+  });
+});
+
+exports.deleteBooking = catchAsync(async (req, res, next) => {
+  const booking = await Booking.findByIdAndDelete(req.params.id);
+  if (!booking) {
+    return next(new AppError("No booking found with that ID", 404));
+  }
+  const flight = await Flight.findById(booking.flight);
+
+  if (!flight) {
+    return next(new AppError("No flight found with that ID", 404));
+  }
+
+  //getting the seatsBooked object from the flight document(BLUEPRINT)
+  const { seatsBooked } = flight;
+
+  let bookedEconomySeats = 0;
+  let bookedPremiumClassSeats = 0;
+  let bookedFirstClassSeats = 0;
+
+  for (let seatNumber of booking.seatNumbers) {
+    let seatClass = "";
+
+    if (seatNumber[0] === "E") {
+      seatClass = "economy";
+      bookedEconomySeats++;
+    } else if (seatNumber[0] === "P") {
+      seatClass = "premiumClass";
+      bookedPremiumClassSeats++;
+    } else if (seatNumber[0] === "F") {
+      seatClass = "firstClass";
+      bookedFirstClassSeats++;
+    } else {
+      return next(new AppError("Invalid seat number", 404));
+    }
+
+    if (seatsBooked[seatNumber]) {
+      seatsBooked[seatNumber] = false;
+    }
+  }
+
+  await Flight.findOneAndUpdate(
+    { _id: booking.flight },
+    {
+      seatsBooked,
+      $inc: {
+        economySeats: bookedEconomySeats,
+        premiumClassSeats: bookedPremiumClassSeats,
+        firstClassSeats: bookedFirstClassSeats,
+      },
+    }
+  );
+
+  res.status(200).json({
+    status: "success",
   });
 });
