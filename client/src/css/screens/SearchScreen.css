@@ -20,7 +20,7 @@
 }
 
 .search-search-button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   border: none;
   border-radius: 5rem;
   background-color: var(--color-white);
@@ -34,4 +34,11 @@
 .search-search-button:hover {
   background-color: #1864ab;
   color: var(--color-white);
+}
+
+.filter-flight-card-container {
+  display: flex;
+  justify-content: center;
+
+  padding: 2rem 2rem;
 }

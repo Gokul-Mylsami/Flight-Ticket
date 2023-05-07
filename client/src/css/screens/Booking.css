@@ -1,0 +1,6 @@
+.seating-billing-container {
+  display: flex;
+
+  justify-content: space-around;
+  height: 100%;
+}
