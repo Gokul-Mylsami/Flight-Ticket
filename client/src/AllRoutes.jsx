@@ -9,6 +9,7 @@ import Loading from "./screens/Loading";
 import ManageBooking from "./screens/ManageBooking";
 import AdminLogin from "./screens/admin/AdminLogin";
 import AdminFlightsDashboard from "./screens/admin/AdminFlightsDashboard";
+import AdminBookingDashboard from "./screens/admin/AdminBookingDashboard";
 
 const AllRoutes = () => {
   return (
@@ -20,6 +21,7 @@ const AllRoutes = () => {
       <Route path="/booking" element={<Booking />} />
       <Route path="/mybookings" element={<ManageBooking />} />
       <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/bookings" element={<AdminBookingDashboard />} />
       <Route path="/admin/flights" element={<AdminFlightsDashboard />} />
       <Route path="/loading" element={<Loading />} />
     </Routes>

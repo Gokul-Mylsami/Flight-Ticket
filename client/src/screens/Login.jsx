@@ -1,10 +1,33 @@
-import React from "react";
-
+import React, { useState } from "react";
+import useFetch from "../hooks/useFetch";
 import "../css/screens/Login.css";
 import flight from "../assets/Flight.png";
 import logo from "../assets/logo.png";
+import Loading from "./Loading";
 
 const Login = () => {
+  const [userDetails, setUserDetails] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { fetchData, data, error, loading } = useFetch();
+
+  const handleChange = (e) => {
+    setUserDetails({ ...userDetails, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    fetchData("api/v1/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userDetails),
+    });
+  };
+
   return (
     <div className="login-container">
       <div className="login-left-section">
@@ -19,7 +42,7 @@ const Login = () => {
               Start booking your tickets now onwards 🤩
             </p>
           </div>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="login-form-group">
               <label htmlFor="email">
                 <svg
@@ -40,8 +63,10 @@ const Login = () => {
               <input
                 className="login-input"
                 type="email"
+                name="email"
                 id="email"
                 placeholder="you@example.com"
+                onChange={handleChange}
                 required
               />
             </div>
@@ -54,6 +79,7 @@ const Login = () => {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="login-icon"
+                  onChange={handleChange}
                 >
                   <path
                     strokeLinecap="round"
@@ -66,6 +92,7 @@ const Login = () => {
                 className="login-input"
                 type="password"
                 id="password"
+                name="password"
                 placeholder="Atleast 8 characters"
                 required
               />

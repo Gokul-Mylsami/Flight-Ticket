@@ -12,7 +12,6 @@ const AdminFlightsDashboard = () => {
     { label: "Flight Number", value: "flightNumber" },
     { label: "Origin", value: "originPlace" },
     { label: "Destination", value: "destinationPlace" },
-    ,
   ];
   return (
     <div>

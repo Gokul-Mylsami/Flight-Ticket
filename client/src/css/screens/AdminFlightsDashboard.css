@@ -56,3 +56,11 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.admin-booking-card {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
