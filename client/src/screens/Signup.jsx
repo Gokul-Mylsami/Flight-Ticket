@@ -7,12 +7,12 @@ import { NotificationManager } from "react-notifications";
 
 const Signup = () => {
   const [userDetails, setUserDetails] = useState({
-    name: "Gokul",
-    email: "gokul@gmail.com",
-    password: "123",
-    passwordConfirm: "123",
-    phone: "123",
-    passport: "false",
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+    phone: "",
+    passport: "",
   });
 
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ const Signup = () => {
             <img src={logo} alt="logo" className="login-logo" />
             <p className="login-title">Sign Up!</p>
           </div>
-          <form onClick={submitHandler}>
+          <form onSubmit={submitHandler}>
             <div className="login-form-group">
               <label htmlFor="email">
                 <svg

@@ -23,7 +23,8 @@ module.exports = class Email {
       from: this.from,
       to: this.to,
       subject: "Welcome to Aves Air",
-      html: "<h1>Welcome to Aves Air</h1>",
+      html: `<p style="color:#339af0;font-size:3rem">Welcome to AvesAir</p>
+    <p style="font-size:2rem">Let's start the Journey , we will fly like the birds 🥳🤣</p>`,
     };
     await this.newTransport().sendMail(mailOptions);
   }

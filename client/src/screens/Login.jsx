@@ -9,8 +9,8 @@ import { Link } from "react-router-dom";
 
 const Login = () => {
   const [userDetails, setUserDetails] = useState({
-    email: "test@123.com",
-    password: "test123",
+    email: "",
+    password: "",
   });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();

@@ -114,7 +114,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
 
   //send email to the user
   user = await User.findById(newBooking.user._id);
-  await new Email(user).sendBooking(newBooking);
+  await new Email(user).sendBookingConfirmation(newBooking);
 
   res.status(201).json({
     status: "success",

@@ -42,16 +42,7 @@ const AllRoutes = () => {
           </ProtectedRoutes>
         }
       />
-      <Route
-        path="/admin/login"
-        element={
-          <ProtectedRoutes>
-            <PrivateRoute roles={["admin"]}>
-              <AdminLogin />
-            </PrivateRoute>
-          </ProtectedRoutes>
-        }
-      />
+      <Route path="/admin/login" element={<AdminLogin />} />
       <Route
         path="/admin/dashboard"
         element={

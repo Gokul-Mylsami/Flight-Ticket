@@ -5,7 +5,7 @@ import { utcToZonedTime } from "date-fns-tz";
 
 const AdminFlightsCard = ({ flight }) => {
   const [viewPrice, setViewPrice] = useState(false);
-
+  const [deleteFlightId, setDeleteFlightId] = useState("");
   const [isModelOpen, setIsModelOpen] = useState(false);
 
   const handleViewPrice = (e) => {
@@ -23,6 +23,22 @@ const AdminFlightsCard = ({ flight }) => {
   utcDate = departureTime;
   istDate = utcToZonedTime(utcDate, "Asia/Kolkata");
   departureTime = format(istDate, "HH:mm");
+
+  const deleteFlight = async () => {
+    const response = await fetch(`/api/v1/flights/${deleteFlightId}`, {
+      method: "DELETE",
+    });
+    const data = await response.json();
+    if (data.status === "success") {
+      setIsModelOpen(false);
+      window.location.reload();
+    }
+  };
+
+  const handleDeleteFlight = (e) => {
+    e.preventDefault();
+    deleteFlight();
+  };
 
   return (
     <>
@@ -92,6 +108,7 @@ const AdminFlightsCard = ({ flight }) => {
               className="flight-details-cancel-button"
               onClick={() => {
                 setIsModelOpen(true);
+                setDeleteFlightId(flight._id);
               }}
             >
               Cancel Flight
@@ -159,11 +176,21 @@ const AdminFlightsCard = ({ flight }) => {
             Are you sure !, You want to cancel the Flight
           </p>
           <div className="model-booking-cancel-button-container">
-            <button className="model-booking-yes-button">Yes</button>
+            <button
+              className="model-booking-yes-button"
+              onClick={(e) => {
+                handleDeleteFlight(e);
+                setIsModelOpen(false);
+                setDeleteFlightId("");
+              }}
+            >
+              Yes
+            </button>
             <button
               className="model-booking-no-button"
               onClick={() => {
                 setIsModelOpen(false);
+                setDeleteFlightId("");
               }}
             >
               No
