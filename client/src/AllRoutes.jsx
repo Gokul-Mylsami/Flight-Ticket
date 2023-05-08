@@ -37,11 +37,46 @@ const AllRoutes = () => {
           </ProtectedRoutes>
         }
       />
-      <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin/dashboard" element={<AdminDashboard />} />
-      <Route path="/admin/bookings" element={<AdminBookingDashboard />} />
-      <Route path="/admin/flights" element={<AdminFlightsDashboard />} />
-      <Route path="/admin/addflights" element={<AdminAddFlights />} />
+      <Route
+        path="/admin/login"
+        element={
+          <ProtectedRoutes>
+            <AdminLogin />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path="/admin/dashboard"
+        element={
+          <ProtectedRoutes>
+            <AdminDashboard />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path="/admin/bookings"
+        element={
+          <ProtectedRoutes>
+            <AdminBookingDashboard />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path="/admin/flights"
+        element={
+          <ProtectedRoutes>
+            <AdminFlightsDashboard />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path="/admin/addflights"
+        element={
+          <ProtectedRoutes>
+            <AdminAddFlights />
+          </ProtectedRoutes>
+        }
+      />
       <Route path="/loading" element={<Loading />} />
     </Routes>
   );

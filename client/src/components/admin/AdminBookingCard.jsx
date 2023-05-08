@@ -1,6 +1,13 @@
 import React from "react";
+import { format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
-const AdminBookingCard = () => {
+const AdminBookingCard = ({ booking }) => {
+  console.log(booking);
+  let utcDate = new Date(booking.createdAt);
+  let istDate = utcToZonedTime(utcDate, "Asia/Kolkata");
+  let formattedDate = format(istDate, "EEE MMM dd yyyy HH:mm:ss");
+
   return (
     <div className="manage-booking-card">
       <div>
@@ -10,25 +17,24 @@ const AdminBookingCard = () => {
           className="flight-details-card-img"
         />
       </div>
+
       <div>
-        <p className="manage-booking-card-title">Booking ID :</p>
-        <p className="manage-booking-card-content">123456789</p>
-      </div>
-      <div>
-        <p className="manage-booking-card-title">Booking Date :</p>
-        <p className="manage-booking-card-content">12/12/2021</p>
+        <p className="manage-booking-card-title">Booked Date :</p>
+        <p className="manage-booking-card-content">{formattedDate}</p>
       </div>
       <div>
         <p className="manage-booking-card-title">User Name :</p>
-        <p className="manage-booking-card-content">John Doe</p>
+        <p className="manage-booking-card-content">{booking.user.name}</p>
       </div>
       <div>
         <p className="manage-booking-card-title">Flight Name :</p>
-        <p className="manage-booking-card-content">Air India</p>
+        <p className="manage-booking-card-content">{booking.flight.name}</p>
       </div>
       <div>
         <p className="manage-booking-card-title">Seats Booked :</p>
-        <p className="manage-booking-card-content">E2,F2,E3</p>
+        <p className="manage-booking-card-content">
+          {booking.seatNumbers.toString()}
+        </p>
       </div>
     </div>
   );

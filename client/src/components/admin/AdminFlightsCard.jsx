@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../Modal";
+import { format } from "date-fns";
+import { utcToZonedTime } from "date-fns-tz";
 
 const AdminFlightsCard = ({ flight }) => {
   const [viewPrice, setViewPrice] = useState(false);
@@ -10,6 +12,18 @@ const AdminFlightsCard = ({ flight }) => {
     e.preventDefault();
     setViewPrice(!viewPrice);
   };
+
+  let arrivalTime = new Date(flight.arrivalDate);
+  let departureTime = new Date(flight.departureDate);
+
+  let utcDate = arrivalTime;
+  let istDate = utcToZonedTime(utcDate, "Asia/Kolkata");
+  arrivalTime = format(istDate, "HH:mm");
+
+  utcDate = departureTime;
+  istDate = utcToZonedTime(utcDate, "Asia/Kolkata");
+  departureTime = format(istDate, "HH:mm");
+
   return (
     <>
       <div className="flight-details-card">
@@ -27,12 +41,12 @@ const AdminFlightsCard = ({ flight }) => {
           </div>
           <div>
             <span className="flight-details-time-name">Departure : </span>
-            <p className="flight-details-time">10:25</p>
+            <p className="flight-details-time">{departureTime}</p>
             <span>{flight.originPlace}</span>
           </div>
           <div>
             <span className="flight-details-time-name">Arrival :</span>
-            <p className="flight-details-time">12:55</p>
+            <p className="flight-details-time">{arrivalTime}</p>
             <span> {flight.destinationPlace}</span>
           </div>
 

@@ -64,6 +64,8 @@ const AdminFlightsDashboard = () => {
   useEffect(() => {
     if (flights.length <= 0) {
       fetchFlights();
+    } else {
+      setFilteredFlights(flights);
     }
   }, []);
 

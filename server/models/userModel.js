@@ -24,14 +24,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter your phone number"],
   },
-  country: {
-    type: String,
-    required: [true, "Please enter your country"],
-  },
-  passport: {
-    type: Boolean,
-    required: [true, "Please enter your passport"],
-  },
   password: {
     type: String,
     required: [true, "Please enter your password"],

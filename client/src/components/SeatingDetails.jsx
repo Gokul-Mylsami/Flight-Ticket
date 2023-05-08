@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import "../css/components/SeatingDetails.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import { NotificationManager } from "react-notifications";
 
 const SeatingDetails = () => {
   const [total, setTotal] = useState(0);
+  const navigate = useNavigate();
 
   const { id: flightId } = useParams();
   const { id: userId } = useAuth();
@@ -44,6 +45,7 @@ const SeatingDetails = () => {
     const data = await response.json();
     if (data.status === "success") {
       NotificationManager.success("Ticket Booked Successfully", "Success");
+      navigate("/mybookings");
     } else {
       NotificationManager.error(data.message, "Error");
     }

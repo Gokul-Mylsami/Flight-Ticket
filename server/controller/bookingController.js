@@ -3,10 +3,10 @@ const Flight = require("../models/flightModel");
 const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const Email = require("../utils/email");
 
 exports.getAllBookings = catchAsync(async (req, res, next) => {
-  const bookings = await Booking.find({}).lean();
-
+  const bookings = await Booking.find({}).select("+createdAt");
   res.status(200).json({
     status: "success",
     results: bookings.length,
@@ -23,7 +23,7 @@ exports.getBooking = catchAsync(async (req, res, next) => {
     return next(new AppError("No booking found with that ID", 404));
   }
 
-  res.status(200).json({
+  await res.status(200).json({
     status: "success",
     data: {
       booking,
@@ -36,7 +36,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   // console.log(req.body);
 
   const flight = await Flight.findById(flightId);
-  const user = await User.findById(userId);
+  let user = await User.findById(userId);
 
   if (!flight || !user) {
     return next(new AppError("No flight or user found with that ID", 404));
@@ -111,6 +111,11 @@ exports.createBooking = catchAsync(async (req, res, next) => {
     seatNumbers: req.body.seatNumbers,
     price,
   });
+
+  //send email to the user
+  user = await User.findById(newBooking.user._id);
+  // await new Email(user).sendBooking();
+  // TODO: uncomment the line
 
   res.status(201).json({
     status: "success",

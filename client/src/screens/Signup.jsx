@@ -10,8 +10,9 @@ const Signup = () => {
     name: "Gokul",
     email: "gokul@gmail.com",
     password: "123",
-    confirmPassword: "123",
-    phoneNumber: "123",
+    passwordConfirm: "123",
+    phone: "123",
+    passport: "false",
   });
 
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Signup = () => {
   const submitHandler = (e) => {
     e.preventDefault();
 
-    if (userDetails.password !== userDetails.confirmPassword) {
+    if (userDetails.password !== userDetails.passwordConfirm) {
       return NotificationManager.error("Passwords do not match", "Error");
     }
 
@@ -31,7 +32,7 @@ const Signup = () => {
   };
 
   const createUser = async () => {
-    const response = await fetch("api/v1/users/signup", {
+    const response = await fetch("/api/v1/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +44,18 @@ const Signup = () => {
     if (data.status === "success") {
       console.log(data);
       NotificationManager.success("User Created Successfully", "Success");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          token: data.token,
+          user: data.data.name,
+          role: data.data.role,
+          id: data.data._id,
+        })
+      );
       navigate("/");
+    } else {
+      NotificationManager.error(data.message, "Error");
     }
   };
 
@@ -115,7 +127,7 @@ const Signup = () => {
             </div>
 
             <div className="login-form-group">
-              <label htmlFor="phoneNumber">
+              <label htmlFor="phone">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -134,8 +146,8 @@ const Signup = () => {
               <input
                 className="login-input"
                 type="text"
-                id="phoneNumber"
-                value={userDetails.phoneNumber}
+                id="phone"
+                value={userDetails.phone}
                 onChange={changeHandler}
                 placeholder="+91 9876543210"
                 required
@@ -170,7 +182,7 @@ const Signup = () => {
               />
             </div>
             <div className="login-form-group">
-              <label htmlFor="confirmPassword">
+              <label htmlFor="passwordConfirm">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -189,8 +201,8 @@ const Signup = () => {
               <input
                 className="login-input"
                 type="password"
-                id="confirmPassword"
-                value={userDetails.confirmPassword}
+                id="passwordConfirm"
+                value={userDetails.passwordConfirm}
                 onChange={changeHandler}
                 placeholder="Confirm Password"
                 required

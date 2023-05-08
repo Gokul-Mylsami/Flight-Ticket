@@ -32,17 +32,7 @@ const createSendToken = (user, statusCode, req, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  const {
-    name,
-    email,
-    age,
-    phone,
-    country,
-    aadharNo,
-    passport,
-    password,
-    passwordConfirm,
-  } = req.body;
+  const { name, email, phone, password, passwordConfirm } = req.body;
 
   const user = await User.findOne({ email });
 
@@ -52,11 +42,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   const newUser = await User.create({
     name,
     email,
-    age,
     phone,
-    country,
-    aadharNo,
-    passport,
     password,
     passwordConfirm,
   });
