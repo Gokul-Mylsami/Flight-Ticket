@@ -4,8 +4,10 @@ const router = express.Router();
 const flightController = require("../controller/flightController");
 
 router.get("/", flightController.getAllFlights);
-router.get("/:id", flightController.getFlight);
+router.get("/airports", flightController.getAirports);
 router.post("/", flightController.createFlight);
+
+router.get("/:id", flightController.getFlight);
 router.patch("/:id", flightController.updateFlight);
 router.delete("/:id", flightController.deleteFlight);
 

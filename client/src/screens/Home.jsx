@@ -1,13 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
-import DatePicker from "react-datepicker";
-
+import { DayPicker } from "react-day-picker";
 import Navbar from "../components/Navbar";
-
 import "../css/screens/Home.css";
+import { NotificationManager } from "react-notifications";
+import Loading from "./Loading";
+import { setAirports, setFlights } from "../features/flightSlice";
+import {
+  setDepartureDate,
+  setDestinationPlace,
+  setOriginPlace,
+  setReturnDate,
+  setClassValue,
+  setPassengersCount,
+} from "../features/filterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 const Home = () => {
-  const [depatureDate, setDepature] = useState(new Date());
-  const [classValue, setClassValue] = useState("economy");
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const airports = useSelector((state) => state.flight.airports);
+  const {
+    originPlace,
+    destinationPlace,
+    passengers,
+    departureDate,
+    returnDate,
+    classValue,
+  } = useSelector((state) => state.filter);
+
+  const navigate = useNavigate();
 
   let classValues = [
     {
@@ -23,6 +48,36 @@ const Home = () => {
       value: "first-class",
     },
   ];
+
+  useEffect(() => {
+    const fetchAirports = async () => {
+      setLoading(true);
+      const response = await fetch("api/v1/flights/airports");
+      const data = await response.json();
+      if (data.status === "success") {
+        dispatch(setAirports(data.data));
+      } else {
+        NotificationManager.error(data.message, "Error");
+      }
+      setLoading(false);
+    };
+    fetchAirports();
+  }, []);
+
+  const fetchFlights = async () => {
+    const response = await fetch("api/v1/flights/");
+    const data = await response.json();
+    if (data.status === "success") {
+      console.log(data.data);
+      dispatch(setFlights(data.data));
+    } else {
+      NotificationManager.error(data.message, "Error");
+    }
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div id="home">
@@ -52,7 +107,15 @@ const Home = () => {
             <div className="search-container">
               <div>
                 <p className="search-text">Flying from</p>
-                <Select className="select" />
+                <Select
+                  className="select"
+                  options={airports}
+                  placeholder="Select Airport"
+                  required
+                  onChange={(e) => {
+                    dispatch(setOriginPlace(e.value));
+                  }}
+                />
               </div>
               <div className="toogle-icon">
                 <img
@@ -62,16 +125,28 @@ const Home = () => {
               </div>
               <div>
                 <p className="search-text">Flying to</p>
-                <Select className="select" />
+                <Select
+                  className="select"
+                  placeholder="Select Airport"
+                  options={airports}
+                  onChange={(e) => {
+                    dispatch(setDestinationPlace(e.value));
+                  }}
+                  required
+                />
               </div>
             </div>
             <div className="search-container">
               <div>
                 <p className="search-text">Depature</p>
-                <DatePicker
+                <input
+                  type="date"
+                  value={departureDate}
+                  placeholderText="Select Date"
                   className="home-input date"
-                  selected={depatureDate}
-                  onChange={(date) => setDepature(date)}
+                  onChange={(date) => {
+                    dispatch(setDepartureDate(date.target.value));
+                  }}
                 />
               </div>
             </div>
@@ -79,9 +154,32 @@ const Home = () => {
               <div>
                 <p className="search-text">Passengers</p>
                 <div className="passenger-container">
-                  <span className="passengers-button disabled">-</span>
-                  <span>1</span>
-                  <span className="passengers-button">+</span>
+                  <button
+                    className={`passengers-button ${
+                      passengers <= 1 && "disabled"
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (passengers > 1) {
+                        dispatch(setPassengersCount(passengers - 1));
+                      }
+                    }}
+                  >
+                    -
+                  </button>
+                  <span>{passengers}</span>
+                  <button
+                    className="passengers-button"
+                    onClick={(e) => {
+                      e.preventDefault();
+
+                      if (passengers < 6) {
+                        dispatch(setPassengersCount(passengers + 1));
+                      }
+                    }}
+                  >
+                    +
+                  </button>
                 </div>
               </div>
             </div>
@@ -89,7 +187,7 @@ const Home = () => {
               <div>
                 <p className="search-text">Class</p>
 
-                <div class="radio">
+                <div className="radio">
                   <Select
                     className="select"
                     options={classValues}
@@ -102,7 +200,16 @@ const Home = () => {
               </div>
             </div>
             <div className="search-container">
-              <button className="search-button">Search Flight</button>
+              <button
+                className="search-button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  fetchFlights();
+                  navigate("/search");
+                }}
+              >
+                Search Flight
+              </button>
             </div>
           </div>
         </div>

@@ -1,10 +1,62 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { NotificationManager } from "react-notifications";
 import "../../css/screens/Login.css";
 import flight from "../../assets/Flight.png";
 import logo from "../../assets/logo.png";
+import Loading from "../Loading";
 
-const Login = () => {
+const AdminLogin = () => {
+  const [loading, setLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState({
+    email: "admin@avesair.com",
+    password: "test123",
+  });
+
+  const changeHandler = (e) => {
+    setUserDetails({ ...userDetails, [e.target.id]: e.target.value });
+  };
+  const navigate = useNavigate();
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    loginUser();
+  };
+
+  const loginUser = async () => {
+    setLoading(true);
+    const response = await fetch("/api/v1/users/admin/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userDetails),
+    });
+
+    const data = await response.json();
+    if (data.status === "success") {
+      console.log(data);
+      NotificationManager.success("Login Successful", "Success");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          token: data.token,
+          user: data.data.name,
+          role: data.data.role,
+          id: data.data._id,
+        })
+      );
+      navigate("/admin/dashboard");
+    } else {
+      NotificationManager.error(data.message, "Error");
+    }
+    setLoading(false);
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <div className="login-container">
       <div className="login-left-section">
@@ -19,7 +71,7 @@ const Login = () => {
               Please login to your account to continue
             </p>
           </div>
-          <form>
+          <form onSubmit={submitHandler}>
             <div className="login-form-group">
               <label htmlFor="email">
                 <svg
@@ -41,6 +93,8 @@ const Login = () => {
                 className="login-input"
                 type="email"
                 id="email"
+                value={userDetails.email}
+                onChange={changeHandler}
                 placeholder="you@example.com"
                 required
               />
@@ -66,6 +120,8 @@ const Login = () => {
                 className="login-input"
                 type="password"
                 id="password"
+                value={userDetails.password}
+                onChange={changeHandler}
                 placeholder="Atleast 8 characters"
                 required
               />
@@ -79,13 +135,10 @@ const Login = () => {
               </button>
             </div>
           </form>
-          <div className="login-form-group create-account">
-            <p>Create New Account </p>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default AdminLogin;

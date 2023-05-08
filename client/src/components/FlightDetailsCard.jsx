@@ -1,13 +1,31 @@
 import React, { useState } from "react";
+import { parseISO, format } from "date-fns";
+import { useNavigate } from "react-router-dom";
 
 import "../css/components/FlightDetailsCard.css";
 
-const FlightDetailsCard = () => {
+const FlightDetailsCard = ({ flight }) => {
   const [viewPrice, setViewPrice] = useState(false);
 
   const handleViewPrice = (e) => {
     e.preventDefault();
     setViewPrice(!viewPrice);
+  };
+
+  const navigate = useNavigate();
+
+  const isodepartureDate = flight.departureDate;
+  const departureDate = parseISO(isodepartureDate);
+  const isoArrivalDate = flight.arrivalDate;
+
+  const arrivalDate = parseISO(isoArrivalDate);
+
+  const formattedDepatureDate = format(departureDate, "HH:mm");
+  const formattedArrivalDate = format(arrivalDate, "HH:mm");
+
+  const bookHandler = (e) => {
+    e.preventDefault();
+    navigate("/booking/" + flight._id);
   };
 
   return (
@@ -20,22 +38,22 @@ const FlightDetailsCard = () => {
             alt="aeroplane-logo"
           />
           <div>
-            <p className="flight-details-flight-name">Air India</p>
-            <span>AI 865</span>
+            <p className="flight-details-flight-name">{flight.name}</p>
+            <span>{flight.flightNumber}</span>
           </div>
         </div>
         <div>
           <span className="flight-details-time-name">Departure : </span>
-          <p className="flight-details-time">10:25</p>
-          <span>New Delhi</span>
+          <p className="flight-details-time">{formattedDepatureDate}</p>
+          <span>{flight.originPlace}</span>
         </div>
         <div>
           <span className="flight-details-time-name">Arrival : </span>
-          <p className="flight-details-time">12:55</p>
-          <span>Mumbai</span>
+          <p className="flight-details-time">{formattedArrivalDate}</p>
+          <span>{flight.destinationPlace}</span>
         </div>
         <div>
-          <p className="flight-details-amount">₹ 8,285</p>
+          <p className="flight-details-amount">₹ {flight.economyPrice}</p>
         </div>
         <div>
           <button
@@ -94,11 +112,16 @@ const FlightDetailsCard = () => {
                   <td className="flight-details-class flight-details-values">
                     Economy
                   </td>
-                  <td className="flight-details-values">25 kg</td>
+                  <td className="flight-details-values">{flight.checkIn}</td>
                   <td className="flight-details-values">Free Cancellation</td>
                   <td className="flight-details-values flight-details-booking">
-                    <p className="flight-detials-table-price">₹ 8,285</p>
-                    <button className="flight-details-book-button">
+                    <p className="flight-detials-table-price">
+                      ₹ {flight.economyPrice}
+                    </p>
+                    <button
+                      className="flight-details-book-button"
+                      onClick={bookHandler}
+                    >
                       Book Now
                     </button>
                   </td>
@@ -107,11 +130,16 @@ const FlightDetailsCard = () => {
                   <td className="flight-details-class flight-details-values">
                     First Class
                   </td>
-                  <td className="flight-details-values">25 kg</td>
+                  <td className="flight-details-values">{flight.checkIn}</td>
                   <td className="flight-details-values">Free Cancellation</td>
                   <td className="flight-details-values flight-details-booking">
-                    <p className="flight-detials-table-price">₹ 8,438</p>
-                    <button className="flight-details-book-button">
+                    <p className="flight-detials-table-price">
+                      ₹ {flight.firstClassPrice}
+                    </p>
+                    <button
+                      className="flight-details-book-button"
+                      onClick={bookHandler}
+                    >
                       Book Now
                     </button>
                   </td>
@@ -120,11 +148,16 @@ const FlightDetailsCard = () => {
                   <td className="flight-details-class flight-details-values">
                     Premium
                   </td>
-                  <td className="flight-details-values">25 kg</td>
+                  <td className="flight-details-values">{flight.checkIn}</td>
                   <td className="flight-details-values">Free Cancellation</td>
                   <td className="flight-details-values flight-details-booking">
-                    <p className="flight-detials-table-price">₹ 19,079</p>
-                    <button className="flight-details-book-button">
+                    <p className="flight-detials-table-price">
+                      ₹ ${flight.premiumClassPrice}
+                    </p>
+                    <button
+                      className="flight-details-book-button"
+                      onClick={bookHandler}
+                    >
                       Book Now
                     </button>
                   </td>

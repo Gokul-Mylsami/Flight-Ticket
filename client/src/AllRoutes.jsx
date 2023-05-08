@@ -10,6 +10,8 @@ import ManageBooking from "./screens/ManageBooking";
 import AdminLogin from "./screens/admin/AdminLogin";
 import AdminFlightsDashboard from "./screens/admin/AdminFlightsDashboard";
 import AdminBookingDashboard from "./screens/admin/AdminBookingDashboard";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import AdminDashboard from "./screens/admin/AdminDashboard";
 
 const AllRoutes = () => {
   return (
@@ -18,9 +20,24 @@ const AllRoutes = () => {
       <Route path="/search" element={<SearchScreen />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-      <Route path="/booking" element={<Booking />} />
-      <Route path="/mybookings" element={<ManageBooking />} />
+      <Route
+        path="/booking/:id"
+        element={
+          <ProtectedRoutes>
+            <Booking />
+          </ProtectedRoutes>
+        }
+      />
+      <Route
+        path="/mybookings"
+        element={
+          <ProtectedRoutes>
+            <ManageBooking />
+          </ProtectedRoutes>
+        }
+      />
       <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/bookings" element={<AdminBookingDashboard />} />
       <Route path="/admin/flights" element={<AdminFlightsDashboard />} />
       <Route path="/loading" element={<Loading />} />

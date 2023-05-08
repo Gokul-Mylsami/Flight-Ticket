@@ -7,10 +7,10 @@
 .manage-booking-container {
   margin-top: 2rem;
   margin-left: 2rem;
+  margin-right: 2rem;
 }
 
 .manage-booking-card {
-  width: 800px;
   display: flex;
   gap: 1rem;
   align-items: center;

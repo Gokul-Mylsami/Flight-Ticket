@@ -33,6 +33,7 @@ exports.getBooking = catchAsync(async (req, res, next) => {
 
 exports.createBooking = catchAsync(async (req, res, next) => {
   const { flightId, userId, seatNumbers } = req.body;
+  // console.log(req.body);
 
   const flight = await Flight.findById(flightId);
   const user = await User.findById(userId);
@@ -170,5 +171,20 @@ exports.deleteBooking = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
+  });
+});
+
+exports.myBookings = catchAsync(async (req, res, next) => {
+  if (!req.user) {
+    return next(new AppError("Please login to view your bookings", 404));
+  }
+  const bookings = await Booking.find({ user: req.user._id }).select(
+    "+createdAt"
+  );
+
+  res.status(200).json({
+    status: "success",
+    results: bookings.length,
+    data: bookings,
   });
 });

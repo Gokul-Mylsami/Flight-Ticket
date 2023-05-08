@@ -67,3 +67,16 @@ exports.deleteFlight = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+
+exports.getAirports = catchAsync(async (req, res, next) => {
+  const airports = await Flight.find().select({
+    originPlace: 1,
+    destinationPlace: 1,
+  });
+
+  res.status(200).json({
+    status: "success",
+    results: airports.length,
+    data: airports,
+  });
+});

@@ -15,6 +15,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .logo-container img {
@@ -65,10 +66,23 @@
   padding: 0.4rem 0.8rem;
   border-radius: 0.4rem;
   transition: background-color 0.4s ease-in-out;
+  color: #333;
+  font-size: 1rem;
 }
 
 .register:hover,
 .manage-booking:hover {
   background-color: var(--color-primary);
   color: var(--color-white);
+}
+
+.account-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.logout-button {
+  cursor: pointer;
 }

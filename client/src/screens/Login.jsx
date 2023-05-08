@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import useFetch from "../hooks/useFetch";
 import "../css/screens/Login.css";
 import flight from "../assets/Flight.png";
 import logo from "../assets/logo.png";
 import Loading from "./Loading";
+import { NotificationManager } from "react-notifications";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [userDetails, setUserDetails] = useState({
-    email: "",
-    password: "",
+    email: "test@123.com",
+    password: "test123",
   });
-
-  const { fetchData, data, error, loading } = useFetch();
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUserDetails({ ...userDetails, [e.target.id]: e.target.value });
@@ -19,14 +21,42 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetchData("api/v1/auth/login", {
+    loginUser();
+  };
+
+  const loginUser = async () => {
+    setLoading(true);
+    const response = await fetch("/api/v1/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(userDetails),
     });
+
+    const data = await response.json();
+    if (data.status === "success") {
+      console.log(data);
+      NotificationManager.success("Login Successful", "Success");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          token: data.token,
+          user: data.data.name,
+          role: data.data.role,
+          id: data.data._id,
+        })
+      );
+      navigate("/");
+    } else {
+      NotificationManager.error(data.message, "Error");
+    }
+    setLoading(false);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="login-container">
@@ -66,6 +96,7 @@ const Login = () => {
                 name="email"
                 id="email"
                 placeholder="you@example.com"
+                value={userDetails.email}
                 onChange={handleChange}
                 required
               />
@@ -79,7 +110,6 @@ const Login = () => {
                   strokeWidth={1.5}
                   stroke="currentColor"
                   className="login-icon"
-                  onChange={handleChange}
                 >
                   <path
                     strokeLinecap="round"
@@ -93,6 +123,8 @@ const Login = () => {
                 type="password"
                 id="password"
                 name="password"
+                value={userDetails.password}
+                onChange={handleChange}
                 placeholder="Atleast 8 characters"
                 required
               />
@@ -107,7 +139,12 @@ const Login = () => {
             </div>
           </form>
           <div className="login-form-group create-account">
-            <p>Create New Account </p>
+            <p>
+              Are you admin ? <Link to={"/admin/login"}>Admin Login</Link>
+            </p>
+          </div>
+          <div className="login-form-group create-account">
+            <Link to="/signup">Create New Account</Link>
           </div>
         </div>
       </div>

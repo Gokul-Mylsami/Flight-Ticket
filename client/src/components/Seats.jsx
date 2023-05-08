@@ -1,28 +1,45 @@
 import React, { useState } from "react";
-
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setSeats,
+  setEconomyCount,
+  setFirstClassCount,
+  setPremiumCount,
+} from "../features/seatingSlice";
 import "../css/components/Seats.css";
 
 const Seats = () => {
   const [selected, setSelected] = useState([]);
 
-  const unavailable = {
-    E5: true,
-    P5: true,
-    F5: true,
-    E8: true,
-    P8: true,
-    F8: true,
-  };
+  const {
+    bookedSeats: unavailable,
+    premiumCount,
+    economyCount,
+    firstClassCount,
+  } = useSelector((state) => state.seating);
+  const dispatch = useDispatch();
 
   const selectHandle = (e) => {
     if (!unavailable[e.target.id]) {
       if (e.target.classList.contains("selected")) {
         e.target.classList.remove("selected");
         setSelected(selected.filter((seat) => seat !== e.target.id));
+        dispatch(setSeats(selected.filter((seat) => seat !== e.target.id)));
       } else {
         console.log(e.target.id);
-        e.target.classList.add("selected");
-        setSelected([...selected, e.target.id]);
+        if (selected.length < 6) {
+          if (e.target.id[0] === "P") {
+            dispatch(setPremiumCount(premiumCount + 1));
+          } else if (e.target.id[0] === "F") {
+            dispatch(setFirstClassCount(firstClassCount + 1));
+          } else if (e.target.id[0] === "E") {
+            dispatch(setEconomyCount(economyCount + 1));
+          }
+
+          e.target.classList.add("selected");
+          setSelected([...selected, e.target.id]);
+          dispatch(setSeats([...selected, e.target.id]));
+        }
       }
     }
   };

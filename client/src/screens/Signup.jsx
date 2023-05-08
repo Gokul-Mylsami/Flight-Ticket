@@ -1,10 +1,52 @@
-import React from "react";
-
+import React, { useState } from "react";
 import "../css/screens/Login.css";
 import flight from "../assets/signup.jpeg";
 import logo from "../assets/logo.png";
-//name, email, password, confirm password , phone number , email
+import { Link, useNavigate } from "react-router-dom";
+import { NotificationManager } from "react-notifications";
+
 const Signup = () => {
+  const [userDetails, setUserDetails] = useState({
+    name: "Gokul",
+    email: "gokul@gmail.com",
+    password: "123",
+    confirmPassword: "123",
+    phoneNumber: "123",
+  });
+
+  const navigate = useNavigate();
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    if (userDetails.password !== userDetails.confirmPassword) {
+      return NotificationManager.error("Passwords do not match", "Error");
+    }
+
+    createUser();
+  };
+
+  const changeHandler = (e) => {
+    setUserDetails({ ...userDetails, [e.target.id]: e.target.value });
+  };
+
+  const createUser = async () => {
+    const response = await fetch("api/v1/users/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userDetails),
+    });
+
+    const data = await response.json();
+    if (data.status === "success") {
+      console.log(data);
+      NotificationManager.success("User Created Successfully", "Success");
+      navigate("/");
+    }
+  };
+
   return (
     <div className="login-container">
       <div className="login-left-section">
@@ -16,7 +58,7 @@ const Signup = () => {
             <img src={logo} alt="logo" className="login-logo" />
             <p className="login-title">Sign Up!</p>
           </div>
-          <form>
+          <form onClick={submitHandler}>
             <div className="login-form-group">
               <label htmlFor="email">
                 <svg
@@ -39,6 +81,8 @@ const Signup = () => {
                 type="text"
                 id="name"
                 placeholder="Username"
+                value={userDetails.name}
+                onChange={changeHandler}
                 required
               />
             </div>
@@ -63,13 +107,15 @@ const Signup = () => {
                 className="login-input"
                 type="email"
                 id="email"
+                value={userDetails.email}
+                onChange={changeHandler}
                 placeholder="you@example.com"
                 required
               />
             </div>
 
             <div className="login-form-group">
-              <label htmlFor="phoneno">
+              <label htmlFor="phoneNumber">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -88,7 +134,9 @@ const Signup = () => {
               <input
                 className="login-input"
                 type="text"
-                id="phoneno"
+                id="phoneNumber"
+                value={userDetails.phoneNumber}
+                onChange={changeHandler}
                 placeholder="+91 9876543210"
                 required
               />
@@ -115,12 +163,14 @@ const Signup = () => {
                 className="login-input"
                 type="password"
                 id="password"
+                value={userDetails.password}
+                onChange={changeHandler}
                 placeholder="Password"
                 required
               />
             </div>
             <div className="login-form-group">
-              <label htmlFor="confirm-password">
+              <label htmlFor="confirmPassword">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -139,7 +189,9 @@ const Signup = () => {
               <input
                 className="login-input"
                 type="password"
-                id="confirm-password"
+                id="confirmPassword"
+                value={userDetails.confirmPassword}
+                onChange={changeHandler}
                 placeholder="Confirm Password"
                 required
               />
@@ -151,7 +203,9 @@ const Signup = () => {
             </div>
           </form>
           <div className="login-form-group create-account">
-            <p>Already have an Account ? Login </p>
+            <p>
+              Already have an Account ? <Link to={"/login"}>Login</Link>
+            </p>
           </div>
         </div>
       </div>
