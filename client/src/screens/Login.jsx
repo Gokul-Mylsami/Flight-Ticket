@@ -130,7 +130,7 @@ const Login = () => {
               />
             </div>
             <div className="forgot-password">
-              <p href="/">Forgot password?</p>
+              <Link to="/forgotpassword">Forgot password?</Link>
             </div>
             <div className="login-form-group">
               <button type="submit" className="login-button">

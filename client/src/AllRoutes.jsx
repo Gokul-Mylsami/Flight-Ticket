@@ -13,6 +13,8 @@ import AdminBookingDashboard from "./screens/admin/AdminBookingDashboard";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import AdminDashboard from "./screens/admin/AdminDashboard";
 import AdminAddFlights from "./screens/admin/AdminAddFlights";
+import ResetPassword from "./screens/ResetPassword";
+import ForgotPassword from "./screens/ForgotPassword";
 
 const AllRoutes = () => {
   return (
@@ -21,6 +23,8 @@ const AllRoutes = () => {
       <Route path="/search" element={<SearchScreen />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/resetpassword/:token" element={<ResetPassword />} />
+      <Route path="/forgotpassword" element={<ForgotPassword />} />
       <Route
         path="/booking/:id"
         element={

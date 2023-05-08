@@ -194,15 +194,12 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // 3) Send it to user's email
   try {
-    // const resetURL = `${req.protocol}://${req.get(
-    //   "host"
-    // )}/api/v1/users/resetPassword/${resetToken}`;
-    // await new Email(user, resetURL).sendPasswordReset();
+    const resetURL = `${req.protocol}://${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
+    await new Email(user, resetURL).sendPasswordReset();
     console.log(resetToken);
 
     res.status(200).json({
       status: "success",
-      resetToken, //TODO: remove this
       message: "Token sent to email!",
     });
   } catch (err) {

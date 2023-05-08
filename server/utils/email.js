@@ -63,7 +63,9 @@ module.exports = class Email {
       from: this.from,
       to: this.to,
       subject: "Aves Air - Password Reset",
-      html: "<h1>Click on the link to reset your password.</h1>",
+      html: `<h3>Click on the link to reset your password.</h3>
+      <a href=" ${this.url}">Reset Password</a>
+      `,
     };
     await this.newTransport().sendMail(mailOptions);
   }
