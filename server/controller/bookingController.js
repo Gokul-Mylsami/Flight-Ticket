@@ -114,8 +114,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
 
   //send email to the user
   user = await User.findById(newBooking.user._id);
-  // await new Email(user).sendBooking();
-  // TODO: uncomment the line
+  await new Email(user).sendBooking(newBooking);
 
   res.status(201).json({
     status: "success",
@@ -174,6 +173,7 @@ exports.deleteBooking = catchAsync(async (req, res, next) => {
     }
   );
 
+  await new Email(booking.user).sendBookingCancellation(booking);
   res.status(200).json({
     status: "success",
   });

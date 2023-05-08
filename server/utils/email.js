@@ -28,12 +28,19 @@ module.exports = class Email {
     await this.newTransport().sendMail(mailOptions);
   }
 
-  async sendBookingConfirmation() {
+  async sendBookingConfirmation(booking) {
     const mailOptions = {
       from: this.from,
       to: this.to,
       subject: "Aves Air - Booking Confirmation",
-      html: "<h1>Thank you for booking with us. Your booking is confirmed.</h1>",
+      html: `<p style="font-size:2rem;font-weight:bold">Thank you for booking with us.</p>
+       <p>Your booking is confirmed.</p>
+       <p>ID : ${booking._id}</p>
+       <p>Seats : ${booking.seatNumbers.toString()}</p>
+       <p>Price : ${booking.price}</p>
+       
+       <p>Happy Journey 🥳</p>
+       `,
     };
     await this.newTransport().sendMail(mailOptions);
   }
@@ -43,7 +50,9 @@ module.exports = class Email {
       from: this.from,
       to: this.to,
       subject: "Aves Air - Booking Cancellation",
-      html: "<h1>Your booking is cancelled.</h1>",
+      html: `<p style="font-size:2rem;font-weight:bold">Successfully Cancelled the Ticket</p>
+      <p>Amount Will be Refunded shortly 💥💥</p>
+      `,
     };
     await this.newTransport().sendMail(mailOptions);
   }
@@ -53,7 +62,10 @@ module.exports = class Email {
       from: this.from,
       to: this.to,
       subject: "Aves Air - Flight Cancellation",
-      html: "<h1>Your flight is cancelled.</h1>",
+      html: `<p style="font-size:2rem;font-weight:bold">Sorry for the inconvenience</p>
+      <p>The Flight are cancelled</p>
+      <p>Don't Worry The amount will be Refunded shortly 🙂</p>
+      `,
     };
     await this.newTransport().sendMail(mailOptions);
   }

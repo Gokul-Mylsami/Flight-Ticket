@@ -47,7 +47,7 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm,
   });
 
-  // await new Email(newUser, "http://localhost:3000").sendWelcome();
+  await new Email(newUser).sendWelcome();
   createSendToken(newUser, 201, req, res);
 });
 
@@ -196,7 +196,7 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
   try {
     const resetURL = `${req.protocol}://${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
-    console.log(resetToken);
+    // console.log(resetToken);
 
     res.status(200).json({
       status: "success",

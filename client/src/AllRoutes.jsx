@@ -15,12 +15,13 @@ import AdminDashboard from "./screens/admin/AdminDashboard";
 import AdminAddFlights from "./screens/admin/AdminAddFlights";
 import ResetPassword from "./screens/ResetPassword";
 import ForgotPassword from "./screens/ForgotPassword";
+import PrivateRoute from "./components/PrivateRoute";
 
 const AllRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/search" element={<SearchScreen />} />
+      {/* <Route path="/" element={<Home />} /> */}
+      <Route path="/" element={<SearchScreen />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <Route path="/resetpassword/:token" element={<ResetPassword />} />
@@ -45,7 +46,9 @@ const AllRoutes = () => {
         path="/admin/login"
         element={
           <ProtectedRoutes>
-            <AdminLogin />
+            <PrivateRoute roles={["admin"]}>
+              <AdminLogin />
+            </PrivateRoute>
           </ProtectedRoutes>
         }
       />
@@ -53,7 +56,9 @@ const AllRoutes = () => {
         path="/admin/dashboard"
         element={
           <ProtectedRoutes>
-            <AdminDashboard />
+            <PrivateRoute roles={["admin"]}>
+              <AdminDashboard />
+            </PrivateRoute>
           </ProtectedRoutes>
         }
       />
@@ -61,7 +66,9 @@ const AllRoutes = () => {
         path="/admin/bookings"
         element={
           <ProtectedRoutes>
-            <AdminBookingDashboard />
+            <PrivateRoute roles={["admin"]}>
+              <AdminBookingDashboard />
+            </PrivateRoute>
           </ProtectedRoutes>
         }
       />
@@ -69,7 +76,9 @@ const AllRoutes = () => {
         path="/admin/flights"
         element={
           <ProtectedRoutes>
-            <AdminFlightsDashboard />
+            <PrivateRoute roles={["admin"]}>
+              <AdminFlightsDashboard />
+            </PrivateRoute>
           </ProtectedRoutes>
         }
       />
@@ -77,7 +86,9 @@ const AllRoutes = () => {
         path="/admin/addflights"
         element={
           <ProtectedRoutes>
-            <AdminAddFlights />
+            <PrivateRoute roles={["admin"]}>
+              <AdminAddFlights />
+            </PrivateRoute>
           </ProtectedRoutes>
         }
       />

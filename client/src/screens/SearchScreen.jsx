@@ -10,6 +10,7 @@ import { setAirports, setFlights } from "../features/flightSlice";
 import Loading from "./Loading";
 
 const SearchScreen = () => {
+  const [fliteredAirports, setFilteredAirports] = useState([]);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -37,12 +38,15 @@ const SearchScreen = () => {
     setLoading(false);
   };
 
+  console.log();
+
   const fetchFlights = async () => {
     const response = await fetch("api/v1/flights/");
     const data = await response.json();
     if (data.status === "success") {
       console.log(data.data);
       dispatch(setFlights(data.data));
+      setFilteredAirports(data.data);
     } else {
       NotificationManager.error(data.message, "Error");
     }
@@ -54,14 +58,27 @@ const SearchScreen = () => {
   return (
     <div className="search-screen-section">
       <Navbar />
-      <SearchBar />
+      <SearchBar
+        loading={loading}
+        setLoading={setLoading}
+        setFilteredAirports={setFilteredAirports}
+      />
       <div className="filter-flight-card-container">
-        <FilterSidebar />
+        <FilterSidebar
+          fliteredAirports={fliteredAirports}
+          setFilteredAirports={setFilteredAirports}
+        />
 
         <div>
-          {flights.map((flight) => {
-            return <FlightDetailsCard key={flight._id} flight={flight} />;
-          })}
+          {fliteredAirports.length <= 0 && (
+            <div className="flight-details-card">
+              <h2>No Airplanes</h2>
+            </div>
+          )}
+          {fliteredAirports.length >= 1 &&
+            fliteredAirports.map((flight) => {
+              return <FlightDetailsCard key={flight._id} flight={flight} />;
+            })}
         </div>
       </div>
     </div>

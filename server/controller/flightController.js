@@ -70,10 +70,10 @@ exports.deleteFlight = catchAsync(async (req, res, next) => {
   //TODO: remove the comments
 
   //cancel all the bookings related to this flight and send email to the user
-  // bookings.forEach(async (booking) => {
-  //   console.log(booking.user.email);
-  //   await new Email(newUser, "http://localhost:3000").sendFlightCancellation();
-  // });
+  bookings.forEach(async (booking) => {
+    console.log(booking.user.email);
+    await new Email(newUser).sendFlightCancellation();
+  });
 
   await Flight.findByIdAndDelete(req.params.id);
   await Booking.deleteMany({ flight: req.params.id });

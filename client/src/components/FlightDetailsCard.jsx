@@ -20,8 +20,8 @@ const FlightDetailsCard = ({ flight }) => {
 
   const arrivalDate = parseISO(isoArrivalDate);
 
-  const formattedDepatureDate = format(departureDate, "HH:mm");
-  const formattedArrivalDate = format(arrivalDate, "HH:mm");
+  const formattedDepatureDate = format(departureDate, "MMM dd HH:mm");
+  const formattedArrivalDate = format(arrivalDate, "MMM dd HH:mm");
 
   const bookHandler = (e) => {
     e.preventDefault();

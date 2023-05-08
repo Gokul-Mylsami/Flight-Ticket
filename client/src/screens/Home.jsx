@@ -10,7 +10,6 @@ import {
   setDepartureDate,
   setDestinationPlace,
   setOriginPlace,
-  setReturnDate,
   setClassValue,
   setPassengersCount,
 } from "../features/filterSlice";
@@ -23,14 +22,9 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const airports = useSelector((state) => state.flight.airports);
-  const {
-    originPlace,
-    destinationPlace,
-    passengers,
-    departureDate,
-    returnDate,
-    classValue,
-  } = useSelector((state) => state.filter);
+  const { passengers, departureDate, classValue } = useSelector(
+    (state) => state.filter
+  );
 
   const navigate = useNavigate();
 
@@ -148,39 +142,6 @@ const Home = () => {
                     dispatch(setDepartureDate(date.target.value));
                   }}
                 />
-              </div>
-            </div>
-            <div className="search-container">
-              <div>
-                <p className="search-text">Passengers</p>
-                <div className="passenger-container">
-                  <button
-                    className={`passengers-button ${
-                      passengers <= 1 && "disabled"
-                    }`}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (passengers > 1) {
-                        dispatch(setPassengersCount(passengers - 1));
-                      }
-                    }}
-                  >
-                    -
-                  </button>
-                  <span>{passengers}</span>
-                  <button
-                    className="passengers-button"
-                    onClick={(e) => {
-                      e.preventDefault();
-
-                      if (passengers < 6) {
-                        dispatch(setPassengersCount(passengers + 1));
-                      }
-                    }}
-                  >
-                    +
-                  </button>
-                </div>
               </div>
             </div>
             <div className="search-container">

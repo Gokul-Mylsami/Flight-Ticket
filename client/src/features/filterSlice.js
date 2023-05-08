@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  departureDate: new Date(),
+  departureDate: "",
   originPlace: "",
   destinationPlace: "",
   passengers: 1,

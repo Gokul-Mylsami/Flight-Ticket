@@ -1,28 +1,20 @@
 import React from "react";
 import Select from "react-select";
-import { setAirports } from "../features/flightSlice";
 import {
   setDepartureDate,
   setDestinationPlace,
   setOriginPlace,
-  setReturnDate,
   setClassValue,
-  setPassengersCount,
 } from "../features/filterSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-const SearchBar = () => {
+const SearchBar = ({ setFilteredAirports }) => {
   const dispatch = useDispatch();
 
+  const flights = useSelector((state) => state.flight.flights);
   const airports = useSelector((state) => state.flight.airports);
-  const {
-    originPlace,
-    destinationPlace,
-    passengers,
-    departureDate,
-    returnDate,
-    classValue,
-  } = useSelector((state) => state.filter);
+  const { originPlace, destinationPlace, departureDate, classValue } =
+    useSelector((state) => state.filter);
 
   let classValues = [
     {
@@ -38,6 +30,39 @@ const SearchBar = () => {
       value: "first-class",
     },
   ];
+
+  const searchHandle = (e) => {
+    e.preventDefault();
+
+    let filterFlight = flights.filter((flight) => {
+      const date1 = departureDate;
+      const date2 = flight.departureDate;
+
+      const isoDate = new Date(date2);
+      const year = isoDate.getFullYear();
+      const month = isoDate.getMonth() + 1;
+      const day = isoDate.getDate();
+
+      const formattedDate = `${year}-${month < 10 ? "0" : ""}${month}-${
+        day < 10 ? "0" : ""
+      }${day}`;
+      console.log("hi date", date1);
+      if (
+        flight.originPlace === originPlace ||
+        flight.destinationPlace === destinationPlace
+      ) {
+        if (!date1) {
+          return flight;
+        }
+        if (date1 === formattedDate) {
+          return flight;
+        }
+      }
+    });
+
+    setFilteredAirports(filterFlight);
+  };
+
   return (
     <div className="search-bar-container">
       <div>
@@ -47,6 +72,9 @@ const SearchBar = () => {
           placeholder="Select Origin"
           required
           defaultValue={{ label: originPlace, value: originPlace }}
+          onChange={(e) => {
+            dispatch(setOriginPlace(e.value));
+          }}
           options={airports}
         />
       </div>
@@ -57,6 +85,9 @@ const SearchBar = () => {
           placeholder="Select Destination"
           required
           defaultValue={{ label: destinationPlace, value: destinationPlace }}
+          onChange={(e) => {
+            dispatch(setDestinationPlace(e.value));
+          }}
           options={airports}
         />
       </div>
@@ -69,17 +100,6 @@ const SearchBar = () => {
           onChange={(e) => {
             dispatch(setDepartureDate(e.target.value));
           }}
-        />
-      </div>
-      <div>
-        <p className="search-bar-text">Passengers :</p>
-        <input
-          className="home-input"
-          type="number"
-          min={1}
-          max={6}
-          value={passengers}
-          required
         />
       </div>
       <div>
@@ -96,7 +116,9 @@ const SearchBar = () => {
         />
       </div>
       <div>
-        <button className="search-search-button">Search</button>
+        <button className="search-search-button" onClick={searchHandle}>
+          Search
+        </button>
       </div>
     </div>
   );
