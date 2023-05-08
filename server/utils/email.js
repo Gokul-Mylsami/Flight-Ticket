@@ -37,4 +37,34 @@ module.exports = class Email {
     };
     await this.newTransport().sendMail(mailOptions);
   }
+
+  async sendBookingCancellation() {
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject: "Aves Air - Booking Cancellation",
+      html: "<h1>Your booking is cancelled.</h1>",
+    };
+    await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendFlightCancellation() {
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject: "Aves Air - Flight Cancellation",
+      html: "<h1>Your flight is cancelled.</h1>",
+    };
+    await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendPasswordReset() {
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject: "Aves Air - Password Reset",
+      html: "<h1>Click on the link to reset your password.</h1>",
+    };
+    await this.newTransport().sendMail(mailOptions);
+  }
 };

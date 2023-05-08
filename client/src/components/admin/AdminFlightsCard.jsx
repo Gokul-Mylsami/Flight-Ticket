@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../Modal";
 
-const AdminFlightsCard = () => {
+const AdminFlightsCard = ({ flight }) => {
   const [viewPrice, setViewPrice] = useState(false);
 
   const [isModelOpen, setIsModelOpen] = useState(false);
@@ -21,19 +21,19 @@ const AdminFlightsCard = () => {
               alt="aeroplane-logo"
             />
             <div>
-              <p className="flight-details-flight-name">Air India</p>
-              <span>AI 865</span>
+              <p className="flight-details-flight-name">{flight.name}</p>
+              <span>{flight.flightNumber}</span>
             </div>
           </div>
           <div>
             <span className="flight-details-time-name">Departure : </span>
             <p className="flight-details-time">10:25</p>
-            <span>New Delhi</span>
+            <span>{flight.originPlace}</span>
           </div>
           <div>
-            <span className="flight-details-time-name">Arrival : </span>
+            <span className="flight-details-time-name">Arrival :</span>
             <p className="flight-details-time">12:55</p>
-            <span>Mumbai</span>
+            <span> {flight.destinationPlace}</span>
           </div>
 
           <div className="flight-details-admin-button-cotnainer">
@@ -104,7 +104,9 @@ const AdminFlightsCard = () => {
                     <td className="flight-details-values">25 kg</td>
                     <td className="flight-details-values">Free Cancellation</td>
                     <td className="flight-details-values flight-details-booking">
-                      <p className="flight-detials-table-price">₹ 8,285</p>
+                      <p className="flight-detials-table-price">
+                        ₹ {flight.economyPrice}
+                      </p>
                     </td>
                   </tr>
                   <tr>
@@ -114,7 +116,9 @@ const AdminFlightsCard = () => {
                     <td className="flight-details-values">25 kg</td>
                     <td className="flight-details-values">Free Cancellation</td>
                     <td className="flight-details-values flight-details-booking">
-                      <p className="flight-detials-table-price">₹ 8,438</p>
+                      <p className="flight-detials-table-price">
+                        ₹ {flight.firstClassPrice}
+                      </p>
                     </td>
                   </tr>
                   <tr>
@@ -124,7 +128,9 @@ const AdminFlightsCard = () => {
                     <td className="flight-details-values">25 kg</td>
                     <td className="flight-details-values">Free Cancellation</td>
                     <td className="flight-details-values flight-details-booking">
-                      <p className="flight-detials-table-price">₹ 19,079</p>
+                      <p className="flight-detials-table-price">
+                        ₹ {flight.premiumClassPrice}
+                      </p>
                     </td>
                   </tr>
                 </tbody>

@@ -57,8 +57,12 @@ const Navbar = () => {
           <div className="account-login">
             {role === "admin" ? (
               <>
-                <Link className="manage-booking button">All Flights</Link>
-                <Link className="manage-booking button">All Bookings</Link>
+                <Link className="manage-booking button" to={"/admin/flights"}>
+                  All Flights
+                </Link>
+                <Link className="manage-booking button" to={"/admin/bookings"}>
+                  All Bookings
+                </Link>
               </>
             ) : (
               <span

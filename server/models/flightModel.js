@@ -59,7 +59,7 @@ const flightSchema = new mongoose.Schema({
   },
   international: {
     type: Boolean,
-    required: [true, "Please enter the international"],
+    default: false,
   },
   createdAt: {
     type: Date,

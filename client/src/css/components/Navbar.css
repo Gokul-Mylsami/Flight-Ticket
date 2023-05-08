@@ -74,6 +74,7 @@
 .manage-booking:hover {
   background-color: var(--color-primary);
   color: var(--color-white);
+  text-decoration: none;
 }
 
 .account-login {

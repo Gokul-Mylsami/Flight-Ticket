@@ -12,6 +12,7 @@ import AdminFlightsDashboard from "./screens/admin/AdminFlightsDashboard";
 import AdminBookingDashboard from "./screens/admin/AdminBookingDashboard";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import AdminDashboard from "./screens/admin/AdminDashboard";
+import AdminAddFlights from "./screens/admin/AdminAddFlights";
 
 const AllRoutes = () => {
   return (
@@ -40,6 +41,7 @@ const AllRoutes = () => {
       <Route path="/admin/dashboard" element={<AdminDashboard />} />
       <Route path="/admin/bookings" element={<AdminBookingDashboard />} />
       <Route path="/admin/flights" element={<AdminFlightsDashboard />} />
+      <Route path="/admin/addflights" element={<AdminAddFlights />} />
       <Route path="/loading" element={<Loading />} />
     </Routes>
   );

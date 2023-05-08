@@ -1,6 +1,8 @@
 const Flight = require("../models/flightModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const Booking = require("../models/bookingModel");
+const Email = require("../utils/email");
 
 exports.getAllFlights = catchAsync(async (req, res, next) => {
   const flights = await Flight.find({}).sort("-createdAt");
@@ -56,11 +58,25 @@ exports.updateFlight = catchAsync(async (req, res, next) => {
 });
 
 exports.deleteFlight = catchAsync(async (req, res, next) => {
-  const flight = await Flight.findByIdAndDelete(req.params.id);
+  const flight = await Flight.findById(req.params.id);
 
   if (!flight) {
     return next(new AppError("No Flighs found with that ID", 404));
   }
+
+  //find the bookings related to this flight
+  const bookings = await Booking.find({ flight: req.params.id });
+
+  //TODO: remove the comments
+
+  //cancel all the bookings related to this flight and send email to the user
+  // bookings.forEach(async (booking) => {
+  //   console.log(booking.user.email);
+  //   await new Email(newUser, "http://localhost:3000").sendFlightCancellation();
+  // });
+
+  await Flight.findByIdAndDelete(req.params.id);
+  await Booking.deleteMany({ flight: req.params.id });
 
   res.status(204).json({
     status: "success",
